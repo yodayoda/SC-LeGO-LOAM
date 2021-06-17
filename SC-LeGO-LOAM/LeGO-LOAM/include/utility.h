@@ -72,12 +72,20 @@ extern const bool useCloudRing = false; // if true, ang_res_y and ang_bottom are
 // extern const int groundScanInd = 7;
 
 // HDL-32E
-// extern const int N_SCAN = 32;
-// extern const int Horizon_SCAN = 1800;
-// extern const float ang_res_x = 360.0/float(Horizon_SCAN);
-// extern const float ang_res_y = 41.33/float(N_SCAN-1);
-// extern const float ang_bottom = 30.67;
-// extern const int groundScanInd = 20;
+extern const int N_SCAN = 32;
+extern const int Horizon_SCAN = 1800;
+extern const float ang_res_x = 360.0/float(Horizon_SCAN);
+extern const float ang_res_y = 41.33/float(N_SCAN-1);
+extern const float ang_bottom = 30.67;
+extern const int groundScanInd = 20;
+
+// HDL-64E
+// extern const int N_SCAN = 64;
+// extern const int Horizon_SCAN = 900;
+// extern const float ang_res_x = 0.4;
+// extern const float ang_res_y = 26.9/float(N_SCAN-1);
+// extern const float ang_bottom = 30.67; //dunno
+// extern const int groundScanInd = 20; //dunno
 
 // VLS-128
 // extern const int N_SCAN = 128;
@@ -98,12 +106,12 @@ extern const bool useCloudRing = false; // if true, ang_res_y and ang_bottom are
 // extern const int groundScanInd = 7;
 
 // Ouster OS1-64
-extern const int N_SCAN = 64;
-extern const int Horizon_SCAN = 1024;
-extern const float ang_res_x = 360.0/float(Horizon_SCAN);
-extern const float ang_res_y = 33.2/float(N_SCAN-1);
-extern const float ang_bottom = 16.6+0.1;
-extern const int groundScanInd = 15;
+// extern const int N_SCAN = 64;
+// extern const int Horizon_SCAN = 1024;
+// extern const float ang_res_x = 360.0/float(Horizon_SCAN);
+// extern const float ang_res_y = 33.2/float(N_SCAN-1);
+// extern const float ang_bottom = 16.6+0.1;
+// extern const int groundScanInd = 15;
 
 extern const bool loopClosureEnableFlag = true;
 extern const double mappingProcessInterval = 0.3;
