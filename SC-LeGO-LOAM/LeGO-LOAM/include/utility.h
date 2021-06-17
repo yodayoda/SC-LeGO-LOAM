@@ -200,4 +200,10 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (PointXYZIRPYT,
 
 typedef PointXYZIRPYT  PointTypePose;
 
+std::string padZeros(int val, int num_digits = 6) {
+  std::ostringstream out;
+  out << std::internal << std::setfill('0') << std::setw(num_digits) << val;
+  return out.str();
+}
+
 #endif

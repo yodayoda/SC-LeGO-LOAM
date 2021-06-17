@@ -747,12 +747,41 @@ public:
         } 
     }
 
+  void saveOptimizedVerticesKITTIformat(gtsam::Values _estimates, std::string _filename)
+  {
+    using namespace gtsam;
+
+    // ref from gtsam's original code "dataset.cpp"
+    std::fstream stream(_filename.c_str(), fstream::out);
+
+    for(const auto& key_value: _estimates) {
+      auto p = dynamic_cast<const GenericValue<Pose3>*>(&key_value.value);
+      if (!p) continue;
+
+      const Pose3& pose = p->value();
+
+      Point3 t = pose.translation();
+      Rot3 R = pose.rotation();
+      auto col1 = R.column(1); // Point3
+      auto col2 = R.column(2); // Point3
+      auto col3 = R.column(3); // Point3
+
+      stream << col1.x() << " " << col2.x() << " " << col3.x() << " " << t.x() << " "
+	     << col1.y() << " " << col2.y() << " " << col3.y() << " " << t.y() << " "
+	     << col1.z() << " " << col2.z() << " " << col3.z() << " " << t.z() << std::endl;
+    }
+  }
+
     void visualizeGlobalMapThread(){
         ros::Rate rate(0.2);
         while (ros::ok()){
             rate.sleep();
             publishGlobalMap();
         }
+
+	const std::string kitti_format_pg_filename {"/tmp/optimized_poses.txt"};
+        saveOptimizedVerticesKITTIformat(isamCurrentEstimate, kitti_format_pg_filename);
+	
         // save final point cloud
         pcl::io::savePCDFileASCII(fileDirectory+"finalCloud.pcd", *globalMapKeyFramesDS);
 
@@ -1636,6 +1665,18 @@ public:
         cornerCloudKeyFrames.push_back(thisCornerKeyFrame);
         surfCloudKeyFrames.push_back(thisSurfKeyFrame);
         outlierCloudKeyFrames.push_back(thisOutlierKeyFrame);
+
+	// save keyframe cloud as file giseop
+	std::string curr_scd_node_idx = padZeros(scManager.polarcontexts_.size() - 1);
+        bool saveRawCloud { true };
+        pcl::PointCloud<PointType>::Ptr thisKeyFrameCloud(new pcl::PointCloud<PointType>());
+        if(saveRawCloud) { 
+            *thisKeyFrameCloud += *laserCloudRaw;
+        } else {
+            *thisKeyFrameCloud += *thisCornerKeyFrame;
+            *thisKeyFrameCloud += *thisSurfKeyFrame;
+        }
+        pcl::io::savePCDFileBinary("/tmp/Scans/" + curr_scd_node_idx + ".pcd", *thisKeyFrameCloud);
     } // saveKeyFramesAndFactor
 
 
